@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace RalphStore.Controllers
 {
+    //[CartItemCalculator]
     public class HomeController : Controller
     {
         public ActionResult Index()
@@ -19,7 +20,7 @@ namespace RalphStore.Controllers
 
             return View();
         }
-
+        [OutputCache(Duration = 300)]
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";

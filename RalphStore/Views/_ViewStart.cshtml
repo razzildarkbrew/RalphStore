@@ -1,17 +1,3 @@
-﻿@model IEnumerable<RalphStore.Models.StudentModel>
-@{
-    Viewbag.Title = "Index";
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h2>Index</h2>
-
-<table class="table table-striped">
-    @foreach (var student in Model)
-    {
-        <tr>
-            <td>@student.id</td>
-            <td>@student.FirstName</td>
-            <td>@student.LastName</td>
-            <td>@student.FavoriteFood</td>
-        </tr>
-    }
-</table>

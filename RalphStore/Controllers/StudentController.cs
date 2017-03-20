@@ -9,7 +9,7 @@ namespace RalphStore.Controllers
 {
     public class StudentController : Controller
     {
-        private List<StudentModel> students = new List<StudentModel>();
+        private static List<StudentModel> students = new List<StudentModel>();
         // GET: Student
         public ActionResult Index(string id)
         {
@@ -22,9 +22,27 @@ namespace RalphStore.Controllers
                 students.Add(new StudentModel { ID = 5, FirstName = "Will", LastName = "Mabrey", FavoriteFood = "Ice Cream" });
                 students.Add(new StudentModel { ID = 6, FirstName = "Joe", LastName = "Johnson", FavoriteFood = "Nacho" });
             }
-
+            //if (format == "html")
+            //    return View(students);
+            //if (format == "text")
+            //    return View
             return View(students);
         }
+        public ActionResult Edit(int? id)
+        {
+            return View(students.First(x => x.ID == id));
+        }
+        [HttpPost]
+        public ActionResult Edit(StudentModel model)
+        {
+            var student = students.FirstOrDefault(x => x.ID == model.ID);
+            student.FirstName = model.FirstName;
+            student.LastName = model.LastName;
+            student.FavoriteFood = model.FavoriteFood;
+
+            return RedirectToAction("Index", new { edited = true });
+        }
+        //[ActionName("Coffee")]
         public ActionResult GetMoreCoffee()
         {
             return Json("I'm going to get more coffee", JsonRequestBehavior.AllowGet);

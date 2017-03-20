@@ -22,9 +22,13 @@ namespace RalphStore
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
+            // PUT angular bundle
+            //bundles.Add(new ScriptBundle("~/bundles/angular").Include(
+                      //"~/Scripts.angular"));
+
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
+                      "~/Content/bootstrap-yeti.min.css",
                       "~/Content/site.css"));
         }
     }

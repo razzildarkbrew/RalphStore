@@ -1,0 +1,27 @@
+﻿@model RalphStore.Models.StudentModel
+@{
+    ViewBag.Title = "edit";
+}
+
+<h2>Edit: @Model.FirstName @Model.LastName</h2>
+
+<form method="post">
+    <input type="text" name="FirstName" value="@Model.FirstName"/>
+    <input type="text" name="LastName" value="@Model.LastName" />
+    <input type="text" name="FavoriteFood" value="@Model.FavoriteFood" />
+    <input type="hidden" name="ID" value="@Model.ID" />
+    <input type="submit"/>
+</form>
+
+<!-- 
+    <form method="post">
+        <div class="form-group">
+    @Html.LabelFor(x => x.FirstName, new { @class = "form-label" })
+    @Html.TextBoxFor(x => x.LastName, new { @class = "form-label" })
+        </div>
+    
+    @Html
+    -->
+
+
+
