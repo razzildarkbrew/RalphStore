@@ -8,6 +8,7 @@ namespace RalphStore.Controllers
 {
     public class CheckoutController : Controller
     {
+        // string connectionString = System.ConfigurationManager,ConnectionStrings["RalphStore].ConnectionString;
         // GET: Checkout
         public ActionResult Index()
         {
@@ -21,6 +22,13 @@ namespace RalphStore.Controllers
         {
             if (ModelState.IsValid)
             {
+                using (Entities entities = new Entities())
+                {
+                    string uniqueName = Guid.NewGuid().ToString();
+                    OrderHeader newOrder = new OrderHeader();
+                    entities.OrderHeaders.Add(newOrder);
+
+                }
                 //validate
                 //TODO: Persist this order to the database, redirect to a receipt page
                 return RedirectToAction("Index", "Receipt");

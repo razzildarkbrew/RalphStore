@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="27b29eebf61d48b7b4ed3e4279a3da25" Name="Diagram1" >
+        <EntityTypeShape EntityType="RalphStore.DatabaseModel.Address" Width="1.5" PointX="5.75" PointY="1" />
+        <EntityTypeShape EntityType="RalphStore.DatabaseModel.OrderDetail" Width="1.5" PointX="5.75" PointY="5.25" />
+        <EntityTypeShape EntityType="RalphStore.DatabaseModel.OrderHeader" Width="1.5" PointX="8" PointY="1" />
+        <EntityTypeShape EntityType="RalphStore.DatabaseModel.Product" Width="1.5" PointX="0.75" PointY="6.75" />
+        <AssociationConnector Association="RalphStore.DatabaseModel.FK__OrderHead__Addre__35BCFE0A" />
+        <AssociationConnector Association="RalphStore.DatabaseModel.FK__OrderHead__Order__34C8D9D1" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

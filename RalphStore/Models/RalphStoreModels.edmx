@@ -1,0 +1,248 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="RalphStore.DatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Address">
+          <Key>
+            <PropertyRef Name="AddressId" />
+          </Key>
+          <Property Name="AddressId" Type="int" Nullable="false" />
+          <Property Name="Address1" Type="nvarchar" MaxLength="60" />
+          <Property Name="Address2" Type="nvarchar" MaxLength="60" />
+          <Property Name="City" Type="nvarchar" MaxLength="30" />
+          <Property Name="StateProvince" Type="nvarchar" MaxLength="30" />
+          <Property Name="PostalCode" Type="nvarchar" MaxLength="15" />
+        </EntityType>
+        <EntityType Name="OrderDetails">
+          <Key>
+            <PropertyRef Name="OrderDetailsId" />
+          </Key>
+          <Property Name="OrderDetailsId" Type="int" Nullable="false" />
+          <Property Name="OrderQuantity" Type="int" />
+          <Property Name="ProductId" Type="int" />
+          <Property Name="UnitPrice" Type="int" />
+        </EntityType>
+        <EntityType Name="OrderHeader">
+          <Key>
+            <PropertyRef Name="OrderId" />
+          </Key>
+          <Property Name="OrderId" Type="int" Nullable="false" />
+          <Property Name="OrderDate" Type="datetime" />
+          <Property Name="AccountNumber" Type="int" />
+          <Property Name="OrderNumber" Type="int" />
+          <Property Name="OrderDetails" Type="int" Nullable="false" />
+          <Property Name="Address" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="ProductId" Type="int" Nullable="false" />
+          <Property Name="ProductName" Type="nvarchar" MaxLength="100" />
+          <Property Name="ProductNumber" Type="int" />
+          <Property Name="Price" Type="int" Nullable="false" />
+          <Property Name="ProductDescription" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <Association Name="FK__OrderHead__Addre__35BCFE0A">
+          <End Role="Address" Type="Self.Address" Multiplicity="1" />
+          <End Role="OrderHeader" Type="Self.OrderHeader" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Address">
+              <PropertyRef Name="AddressId" />
+            </Principal>
+            <Dependent Role="OrderHeader">
+              <PropertyRef Name="Address" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderHead__Order__34C8D9D1">
+          <End Role="OrderDetails" Type="Self.OrderDetails" Multiplicity="1" />
+          <End Role="OrderHeader" Type="Self.OrderHeader" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderDetails">
+              <PropertyRef Name="OrderDetailsId" />
+            </Principal>
+            <Dependent Role="OrderHeader">
+              <PropertyRef Name="OrderDetails" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="RalphStoreDatabaseModelStoreContainer">
+          <EntitySet Name="Address" EntityType="Self.Address" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderDetails" EntityType="Self.OrderDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderHeader" EntityType="Self.OrderHeader" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__OrderHead__Addre__35BCFE0A" Association="Self.FK__OrderHead__Addre__35BCFE0A">
+            <End Role="Address" EntitySet="Address" />
+            <End Role="OrderHeader" EntitySet="OrderHeader" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderHead__Order__34C8D9D1" Association="Self.FK__OrderHead__Order__34C8D9D1">
+            <End Role="OrderDetails" EntitySet="OrderDetails" />
+            <End Role="OrderHeader" EntitySet="OrderHeader" />
+          </AssociationSet>
+          </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="RalphStore.DatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true" >
+          <EntitySet Name="Addresses" EntityType="RalphStore.DatabaseModel.Address" />
+          <EntitySet Name="OrderDetails" EntityType="RalphStore.DatabaseModel.OrderDetail" />
+          <EntitySet Name="OrderHeaders" EntityType="RalphStore.DatabaseModel.OrderHeader" />
+          <EntitySet Name="Products" EntityType="RalphStore.DatabaseModel.Product" />
+          <AssociationSet Name="FK__OrderHead__Addre__35BCFE0A" Association="RalphStore.DatabaseModel.FK__OrderHead__Addre__35BCFE0A">
+            <End Role="Address" EntitySet="Addresses" />
+            <End Role="OrderHeader" EntitySet="OrderHeaders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderHead__Order__34C8D9D1" Association="RalphStore.DatabaseModel.FK__OrderHead__Order__34C8D9D1">
+            <End Role="OrderDetail" EntitySet="OrderDetails" />
+            <End Role="OrderHeader" EntitySet="OrderHeaders" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="Address">
+          <Key>
+            <PropertyRef Name="AddressId" />
+          </Key>
+          <Property Name="AddressId" Type="Int32" Nullable="false" />
+          <Property Name="Address1" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="Address2" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="StateProvince" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="PostalCode" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="OrderHeaders" Relationship="RalphStore.DatabaseModel.FK__OrderHead__Addre__35BCFE0A" FromRole="Address" ToRole="OrderHeader" />
+        </EntityType>
+        <EntityType Name="OrderDetail">
+          <Key>
+            <PropertyRef Name="OrderDetailsId" />
+          </Key>
+          <Property Name="OrderDetailsId" Type="Int32" Nullable="false" />
+          <Property Name="OrderQuantity" Type="Int32" />
+          <Property Name="ProductId" Type="Int32" />
+          <Property Name="UnitPrice" Type="Int32" />
+          <NavigationProperty Name="OrderHeaders" Relationship="RalphStore.DatabaseModel.FK__OrderHead__Order__34C8D9D1" FromRole="OrderDetail" ToRole="OrderHeader" />
+        </EntityType>
+        <EntityType Name="OrderHeader">
+          <Key>
+            <PropertyRef Name="OrderId" />
+          </Key>
+          <Property Name="OrderId" Type="Int32" Nullable="false" />
+          <Property Name="OrderDate" Type="DateTime" Precision="3" />
+          <Property Name="AccountNumber" Type="Int32" />
+          <Property Name="OrderNumber" Type="Int32" />
+          <Property Name="OrderDetails" Type="Int32" Nullable="false" />
+          <Property Name="Address" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Address1" Relationship="RalphStore.DatabaseModel.FK__OrderHead__Addre__35BCFE0A" FromRole="OrderHeader" ToRole="Address" />
+          <NavigationProperty Name="OrderDetail" Relationship="RalphStore.DatabaseModel.FK__OrderHead__Order__34C8D9D1" FromRole="OrderHeader" ToRole="OrderDetail" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
+          <Property Name="ProductName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ProductNumber" Type="Int32" />
+          <Property Name="Price" Type="Int32" Nullable="false" />
+          <Property Name="ProductDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK__OrderHead__Addre__35BCFE0A">
+          <End Type="RalphStore.DatabaseModel.Address" Role="Address" Multiplicity="1" />
+          <End Type="RalphStore.DatabaseModel.OrderHeader" Role="OrderHeader" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Address">
+              <PropertyRef Name="AddressId" />
+            </Principal>
+            <Dependent Role="OrderHeader">
+              <PropertyRef Name="Address" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderHead__Order__34C8D9D1">
+          <End Type="RalphStore.DatabaseModel.OrderDetail" Role="OrderDetail" Multiplicity="1" />
+          <End Type="RalphStore.DatabaseModel.OrderHeader" Role="OrderHeader" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderDetail">
+              <PropertyRef Name="OrderDetailsId" />
+            </Principal>
+            <Dependent Role="OrderHeader">
+              <PropertyRef Name="OrderDetails" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="RalphStoreDatabaseModelStoreContainer" CdmEntityContainer="Entities" >
+          <EntitySetMapping Name="Addresses">
+            <EntityTypeMapping TypeName="RalphStore.DatabaseModel.Address">
+              <MappingFragment StoreEntitySet="Address">
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="StateProvince" ColumnName="StateProvince" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Address2" ColumnName="Address2" />
+                <ScalarProperty Name="Address1" ColumnName="Address1" />
+                <ScalarProperty Name="AddressId" ColumnName="AddressId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderDetails">
+            <EntityTypeMapping TypeName="RalphStore.DatabaseModel.OrderDetail">
+              <MappingFragment StoreEntitySet="OrderDetails">
+                <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="OrderQuantity" ColumnName="OrderQuantity" />
+                <ScalarProperty Name="OrderDetailsId" ColumnName="OrderDetailsId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderHeaders">
+            <EntityTypeMapping TypeName="RalphStore.DatabaseModel.OrderHeader">
+              <MappingFragment StoreEntitySet="OrderHeader">
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="OrderDetails" ColumnName="OrderDetails" />
+                <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
+                <ScalarProperty Name="AccountNumber" ColumnName="AccountNumber" />
+                <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="RalphStore.DatabaseModel.Product">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="ProductDescription" ColumnName="ProductDescription" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="ProductNumber" ColumnName="ProductNumber" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
