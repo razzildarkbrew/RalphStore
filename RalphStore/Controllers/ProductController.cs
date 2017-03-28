@@ -14,47 +14,59 @@ namespace RalphStore.Controllers
         
         public ActionResult Index(int? id)
         {
-            if (id == 1)
-            {
-                model.ProductName = "Backpack";
-                model.ProductPrice = 19.99m;
-                model.ProductDescription = "blah blah blah";
-                model.ID = 1;
+            //if (id == 1)
+            //{
+            //    model.ProductName = "Backpack";
+            //    model.ProductPrice = 19.99m;
+            //    model.ProductDescription = "blah blah blah";
+            //    model.ID = 1;
                 
 
-                return View(model);
-            }
-            else if (id == 2)
-            {
-                model.ProductName = "Travel Adapter";
-                model.ProductPrice = 29.99m;
-                model.ProductDescription = "lalalala";
-                model.ID = 2;
+            //    return View(model);
+            //}
+            //else if (id == 2)
+            //{
+            //    model.ProductName = "Travel Adapter";
+            //    model.ProductPrice = 29.99m;
+            //    model.ProductDescription = "lalalala";
+            //    model.ID = 2;
                 
-                return View(model);
-            }
+            //    return View(model);
+            //}
 
+            //return HttpNotFound(string.Format("ID {0} Not Found", id));
+
+            using (Entities entities = new Entities())
+            {
+                var product = entities.Products.Find(id);
+                if (product != null)
+                {
+                    ProductModel model = new ProductModel();
+                    model.ID = product.ID;
+                    model.ProductDescription = product.Description;
+                    model.ProductName = product.Name;
+                    model.ProductPrice = product.Price;
+                    model.Images = product.ProductImages.Select(x => x.Path).ToArray();
+
+                    return View(model);
+
+                }
+            }
             return HttpNotFound(string.Format("ID {0} Not Found", id));
         }
         //POST: Product
         [HttpPost]
         public ActionResult Index(ProductModel model)
         {
-            //TODO: Collect information about the selected product
-            //persist it in some sort of "Cart/Basket/ShoppingBag" in a database
-            List<ProductModel> cart = this.Session["Cart"] as List<ProductModel>;
-            if (cart == null)
+            using (Entities entities = new Entities())
             {
-                cart = new List<ProductModel>();
+                if (User.Identity.IsAuthenticated)
+                {
+                    AspNetUser currentUser = entities.AspNetUsers.Single(x => x.UserName == User.Identity.Name);
+                    //OrderHeader o = currentUser.Orders.FirstOrDefault(x => x.Completed == null);
+                }
             }
-
-            cart.Add(model);
-
-            this.Session.Add("Cart", cart);
-
-            TempData.Add("AddedToCart", true);
-
-            return RedirectToAction("Index", "Cart");
+            return HttpNotFound();
         }
     }
 }

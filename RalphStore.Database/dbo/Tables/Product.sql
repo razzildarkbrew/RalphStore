@@ -1,8 +1,13 @@
 ﻿CREATE TABLE [dbo].[Product]
 (
-	[ProductId] INT NOT NULL PRIMARY KEY,
-	[ProductName] NVARCHAR (100) NULL,
-	[ProductNumber] INT NULL,
-	[Price] INT NOT NULL,
-	[ProductDescription] NVARCHAR (100) NULL
+	[ID] INT IDENTITY(1,1) NOT NULL,
+	[Name] NVARCHAR(1000) NOT NULL,
+	[Description] NTEXT NULL,
+	[Price] money NULL,
+	[Active] BIT NOT NULL DEFAULT(1),
+	[Inventory] INT NOT NULL DEFAULT(0),
+	[Created] DATETIME NULL DEFAULT GetUtcDate(),
+	[Modified] DATETIME NULL DEFAULT GetUtcDate(),
+    CONSTRAINT [PK_Product] PRIMARY KEY ([ID]), 
+    CONSTRAINT [CK_Product_Inventory] CHECK (Inventory >= 0) 
 )

@@ -4,6 +4,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using RalphStore.Models;
+using SendGrid;
+using SendGrid.Helpers.Mail;
+
 namespace RalphStore.Controllers
 {
     public class CheckoutController : Controller
@@ -22,11 +25,31 @@ namespace RalphStore.Controllers
         {
             if (ModelState.IsValid)
             {
+               /* //TODO: send an email indicating that the order was placed
+                string sendGridApiKey = System.Configuration.ConfigurationManager.AppSettings["SendGrid.Apikey"];
+
+                SendGrid.SendGridClient client = new SendGridClient(sendGridApiKey);
+                SendGrid.Helpers.Mail.SendGridMessage message = new SendGrid.Helpers.Mail.SendGridMessage();
+                message.Subject = "Receipt for  order #00000";
+                message.From = new SendGrid.Helpers.Mail.EmailAddress("admin@unbox.com", "Unbox Store");
+                message.AddTo(new sendgrid);*/
+
+                /*message.AddContent();
+                await client.SendEmailAsync(message);*/
+
                 using (Entities entities = new Entities())
                 {
-                    string uniqueName = Guid.NewGuid().ToString();
+                    /*string uniqueName = Guid.NewGuid().ToString();
                     OrderHeader newOrder = new OrderHeader();
-                    entities.OrderHeaders.Add(newOrder);
+                    entities.OrderHeaders.Add(newOrder);*/
+                    //Order o = null;
+                    if (User.Identity.IsAuthenticated)
+                    {
+                        AspNetUser currentUser = entities.AspNetUsers.Single(x => x.UserName == User.Identity.Name);
+                        //o = currentUser;
+                    }
+                    
+
 
                 }
                 //validate

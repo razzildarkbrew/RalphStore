@@ -12,16 +12,15 @@ namespace RalphStore.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class OrderHeader
+    public partial class ProductImage
     {
-        public int OrderId { get; set; }
-        public Nullable<System.DateTime> OrderDate { get; set; }
-        public Nullable<int> AccountNumber { get; set; }
-        public Nullable<int> OrderNumber { get; set; }
-        public int OrderDetails { get; set; }
-        public int Address { get; set; }
+        public int Id { get; set; }
+        public int ProductID { get; set; }
+        public string Path { get; set; }
+        public string AltText { get; set; }
+        public Nullable<System.DateTime> Created { get; set; }
+        public Nullable<System.DateTime> Modified { get; set; }
     
-        public virtual Address Address1 { get; set; }
-        public virtual OrderDetail OrderDetail { get; set; }
+        public virtual Product Product { get; set; }
     }
 }

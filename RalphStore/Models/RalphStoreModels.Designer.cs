@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\Codingtemple\Documents\Visual Studio 2015\Projects\RalphStore\RalphStore\Models\RalphStoreModels.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\Codingtemple\documents\visual studio 2015\Projects\RalphStore\RalphStore\Models\RalphStoreModels.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

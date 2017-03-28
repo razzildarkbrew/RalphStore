@@ -12,20 +12,18 @@ namespace RalphStore.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class OrderDetail
+    public partial class AspNetRole
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public OrderDetail()
+        public AspNetRole()
         {
-            this.OrderHeaders = new HashSet<OrderHeader>();
+            this.AspNetUsers = new HashSet<AspNetUser>();
         }
     
-        public int OrderDetailsId { get; set; }
-        public Nullable<int> OrderQuantity { get; set; }
-        public Nullable<int> ProductId { get; set; }
-        public Nullable<int> UnitPrice { get; set; }
+        public string Id { get; set; }
+        public string Name { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OrderHeader> OrderHeaders { get; set; }
+        public virtual ICollection<AspNetUser> AspNetUsers { get; set; }
     }
 }

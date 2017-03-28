@@ -20,6 +20,15 @@ namespace RalphStore.Controllers
 
             return View();
         }
+
+        public ActionResult Products()
+        {
+            return View();
+        }
+        public ActionResult FAQ()
+        {
+            return View();
+        }
         [OutputCache(Duration = 300)]
         public ActionResult Contact()
         {

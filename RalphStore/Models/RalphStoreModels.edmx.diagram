@@ -5,12 +5,27 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="27b29eebf61d48b7b4ed3e4279a3da25" Name="Diagram1" >
-        <EntityTypeShape EntityType="RalphStore.DatabaseModel.Address" Width="1.5" PointX="5.75" PointY="1" />
-        <EntityTypeShape EntityType="RalphStore.DatabaseModel.OrderDetail" Width="1.5" PointX="5.75" PointY="5.25" />
-        <EntityTypeShape EntityType="RalphStore.DatabaseModel.OrderHeader" Width="1.5" PointX="8" PointY="1" />
-        <EntityTypeShape EntityType="RalphStore.DatabaseModel.Product" Width="1.5" PointX="0.75" PointY="6.75" />
-        <AssociationConnector Association="RalphStore.DatabaseModel.FK__OrderHead__Addre__35BCFE0A" />
-        <AssociationConnector Association="RalphStore.DatabaseModel.FK__OrderHead__Order__34C8D9D1" />
+        <EntityTypeShape EntityType="RalphStore.DatabaseModel.Address" Width="1.5" PointX="5.25" PointY="7.125" />
+        <EntityTypeShape EntityType="RalphStore.DatabaseModel.AspNetRole" Width="1.5" PointX="0.75" PointY="5.375" />
+        <EntityTypeShape EntityType="RalphStore.DatabaseModel.AspNetUserClaim" Width="1.5" PointX="5.25" PointY="1.75" />
+        <EntityTypeShape EntityType="RalphStore.DatabaseModel.AspNetUserLogin" Width="1.5" PointX="5.25" PointY="4.5" />
+        <EntityTypeShape EntityType="RalphStore.DatabaseModel.AspNetUser" Width="1.5" PointX="3" PointY="4" />
+        <EntityTypeShape EntityType="RalphStore.DatabaseModel.Order" Width="1.5" PointX="7.5" PointY="5.5" />
+        <EntityTypeShape EntityType="RalphStore.DatabaseModel.OrderProduct" Width="1.5" PointX="9.75" PointY="6.125" />
+        <EntityTypeShape EntityType="RalphStore.DatabaseModel.Product" Width="1.5" PointX="7.5" PointY="0.75" />
+        <EntityTypeShape EntityType="RalphStore.DatabaseModel.ProductImage" Width="1.5" PointX="9.75" PointY="9.875" />
+        <EntityTypeShape EntityType="RalphStore.DatabaseModel.Review" Width="1.5" PointX="9.75" PointY="2.625" />
+        <AssociationConnector Association="RalphStore.DatabaseModel.FK_Address_AspNetUsers" />
+        <AssociationConnector Association="RalphStore.DatabaseModel.FK_Order_BillingAddress" />
+        <AssociationConnector Association="RalphStore.DatabaseModel.FK_Order_ShippingAddress" />
+        <AssociationConnector Association="RalphStore.DatabaseModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="RalphStore.DatabaseModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="RalphStore.DatabaseModel.FK_Order_AspNetUsers" />
+        <AssociationConnector Association="RalphStore.DatabaseModel.FK_OrderProduct_Order" />
+        <AssociationConnector Association="RalphStore.DatabaseModel.FK_OrderProduct_Product" />
+        <AssociationConnector Association="RalphStore.DatabaseModel.FK_ProductImage_Product" />
+        <AssociationConnector Association="RalphStore.DatabaseModel.FK_Review_Product" />
+        <AssociationConnector Association="RalphStore.DatabaseModel.AspNetUserRoles" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -12,30 +12,29 @@ namespace RalphStore.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Product
+    public partial class Order
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Product()
+        public Order()
         {
             this.OrderProducts = new HashSet<OrderProduct>();
-            this.ProductImages = new HashSet<ProductImage>();
-            this.Reviews = new HashSet<Review>();
         }
     
-        public int ID { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public Nullable<decimal> Price { get; set; }
-        public bool Active { get; set; }
-        public int Inventory { get; set; }
+        public int Id { get; set; }
+        public Nullable<System.Guid> OrderNumber { get; set; }
+        public string PurchaserEmail { get; set; }
+        public Nullable<System.DateTime> Completed { get; set; }
+        public string ShipCareOf { get; set; }
+        public Nullable<int> ShippingAddressID { get; set; }
+        public Nullable<int> BillingAddressID { get; set; }
         public Nullable<System.DateTime> Created { get; set; }
         public Nullable<System.DateTime> Modified { get; set; }
+        public string AspNetUserID { get; set; }
     
+        public virtual Address Address { get; set; }
+        public virtual Address Address1 { get; set; }
+        public virtual AspNetUser AspNetUser { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderProduct> OrderProducts { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ProductImage> ProductImages { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Review> Reviews { get; set; }
     }
 }

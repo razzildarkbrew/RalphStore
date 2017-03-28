@@ -3,13 +3,16 @@
     ViewBag.Title = "Model.ProductName";
 }
 
-<h2>Product</h2>
-
         <div class="row">
-            
+            <div class="col-xs-4">
+                @foreach (var img in Model.Images)
+                {
+                    <img src="@img" style="max-width:100%" />
+                }
+            </div>
             <div class="col-xs-8">
                 <div class="well">
-                    <h2>@Model.ProductName</h2>
+                   <h2>@Model.ProductName</h2>
                     <p>@Model.ProductPrice.Value.ToString("C")</p>
                     <p>@Model.ProductDescription</p>
                     @using (Html.BeginForm())

@@ -29,5 +29,6 @@ namespace RalphStore.Models
         [MaxLength(12)]
         [Display(Name = "Zip Code")]
         public string ZipCode { get; set; }
+
     }
 }
