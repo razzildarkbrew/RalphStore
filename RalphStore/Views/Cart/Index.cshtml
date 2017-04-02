@@ -24,10 +24,10 @@
         @foreach (var item in Model.Items)
         {
             <tr>
-                <td>@item.Product.ProductName</td>
+                <td>@item.Product.Name</td>
                 <td>@item.Quantity</td>
                 <td><button disabled class="btn btn-default">Remove</button></td>
-                <td>@((item.Product.ProductPrice ?? 0m).ToString("C"))</td>
+                <td>@((item.Product.Price ?? 0m).ToString("C"))</td>
             </tr>
         }
     </tbody>
@@ -39,3 +39,4 @@
     </tfoot>
 </table>
 @Html.ActionLink("Checkout", "Index", "Checkout", null, new { @class = "btn btn-primary" })
+@Html.ActionLink("Continue Shopping", "Index", "Checkout", null, new { @class = "btn btn-primary" })

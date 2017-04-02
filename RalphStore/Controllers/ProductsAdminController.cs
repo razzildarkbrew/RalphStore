@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
 using RalphStore.Models;
 
 namespace RalphStore.Controllers
 {
+    //[Authorize]
     public class ProductsAdminController : Controller
     {
         private Entities db = new Entities();
@@ -46,10 +50,60 @@ namespace RalphStore.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ProductId,ProductName,ProductNumber,Price,ProductDescription")] Product product)
+        public ActionResult Create([Bind(Include = "ID,Name,Description,Price,Active,Inventory,Created,Modified")] Product product, HttpPostedFileBase image)
         {
             if (ModelState.IsValid)
             {
+                //db.Products.Add(product);
+                //db.SaveChanges();
+                //return RedirectToAction("Index");
+                product.Created = DateTime.UtcNow;
+                product.Modified = DateTime.UtcNow;
+                string fileName = image.FileName;
+                if (ConfigurationManager.AppSettings["UseLocalStorage"] == "true")
+                {
+                    int i = 1;
+                    while (System.IO.File.Exists(Server.MapPath("/Content/" + fileName)))
+                    {
+                        fileName = System.IO.Path.GetFileNameWithoutExtension(fileName) + i.ToString() +
+                                   System.IO.Path.GetExtension(fileName);
+                        i++;
+                    }
+                    image.SaveAs(Server.MapPath("/Content/" + fileName));
+                    fileName = "/Content/" + fileName;
+                }
+                
+                 else
+                {
+                    //Use Blob storage
+                    //TODO: blob storage account value is null
+                    CloudStorageAccount account = CloudStorageAccount.Parse(ConfigurationManager.AppSettings["StorageConnectionString"]);
+                    var blobClient = account.CreateCloudBlobClient();
+                    var rootContainer = blobClient.GetRootContainerReference();
+                    rootContainer.CreateIfNotExists();
+                    rootContainer.SetPermissions(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob });
+
+                    var blob = rootContainer.GetBlockBlobReference(fileName);
+                    blob.UploadFromStream(image.InputStream);
+
+                    fileName = blob.Uri.ToString();
+                }
+                if (db.ProductImages.Any(x => x.ProductID == product.ID))
+                {
+                    ProductImage pi = db.ProductImages.FirstOrDefault(x => x.ProductID == product.ID);
+                    pi.Path = fileName;
+                    pi.Modified = DateTime.UtcNow;
+                }
+                else
+                {
+                    product.ProductImages.Add(new ProductImage
+                    {
+                        Path = fileName,
+                        Created = DateTime.UtcNow,
+                        Modified = DateTime.UtcNow
+                    });
+                }
+
                 db.Products.Add(product);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -78,11 +132,62 @@ namespace RalphStore.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ProductId,ProductName,ProductNumber,Price,ProductDescription")] Product product)
+        public ActionResult Edit([Bind(Include = "ID,Name,Description,Price,Active,Inventory,Created,Modified")] Product product, HttpPostedFileBase image)
         {
             if (ModelState.IsValid)
             {
+                //db.Entry(product).State = EntityState.Modified;
+                //db.SaveChanges();
+                //return RedirectToAction("Index");
+                product.Modified = DateTime.UtcNow;
                 db.Entry(product).State = EntityState.Modified;
+
+
+                //TODO: Need to save a product image here, if an image is supplied
+                string fileName = image.FileName;
+                if (ConfigurationManager.AppSettings["UseLocalStorage"] == "true")
+                {
+
+                    int i = 1;
+                    while (System.IO.File.Exists(Server.MapPath("/Content/Images/" + fileName)))
+                    {
+                        fileName = System.IO.Path.GetFileNameWithoutExtension(fileName) + i.ToString() + System.IO.Path.GetExtension(fileName);
+                        i++;
+                    }
+                    image.SaveAs(Server.MapPath("/Content/Images/" + fileName));
+                    fileName = "/Content/Images/" + fileName;
+                }
+                else
+                {
+                    //Use Blob storage
+                    CloudStorageAccount account = CloudStorageAccount.Parse(ConfigurationManager.AppSettings["StorageConnectionString"]);
+                    var blobClient = account.CreateCloudBlobClient();
+                    var rootContainer = blobClient.GetRootContainerReference();
+                    rootContainer.CreateIfNotExists();
+                    rootContainer.SetPermissions(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob });
+
+                    var blob = rootContainer.GetBlockBlobReference(fileName);
+                    blob.UploadFromStream(image.InputStream);
+
+                    fileName = blob.Uri.ToString();
+                }
+
+                if (db.ProductImages.Any(x => x.ProductID == product.ID))
+                {
+                    ProductImage pi = db.ProductImages.FirstOrDefault(x => x.ProductID == product.ID);
+                    pi.Path = fileName;
+                    pi.Modified = DateTime.UtcNow;
+                }
+                else
+                {
+                    product.ProductImages.Add(new ProductImage
+                    {
+                        Path = fileName,
+                        Created = DateTime.UtcNow,
+                        Modified = DateTime.UtcNow
+                    });
+                }
+
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

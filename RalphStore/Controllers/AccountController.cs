@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
@@ -26,6 +27,7 @@ namespace RalphStore.Controllers
         }
 
         [HttpPost]
+        [Display(Name = "Validate Address")]
         public ActionResult ValidateAddress(string street1, string street2, string city, string state,
             string zip)
         {
@@ -47,7 +49,7 @@ namespace RalphStore.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Register(RegisterModel model)
+        public  async Task<ActionResult> Register(RegisterModel model)
         {
             if (ModelState.IsValid)
             {
@@ -65,24 +67,117 @@ namespace RalphStore.Controllers
                     };
                     IdentityResult result = manager.Create(user, model.Password);
 
-                    User u = manager.FindByName(model.EmailAddress);
-                    String confirmationToken = manager.GenerateEmailConfirmationToken(u.Id);
+
 
                     if (result.Succeeded)
                     {
-                        FormsAuthentication.SetAuthCookie(model.EmailAddress, true);
+                        User u = manager.FindByName(model.EmailAddress);
+
+
+                        //create a customer record in braintree
+
+                        string merchantId = ConfigurationManager.AppSettings["Braintree.MerchantID"];
+                        string publicKey = ConfigurationManager.AppSettings["Braintree.PublicKey"];
+                        string privateKey = ConfigurationManager.AppSettings["Braintree.PrivateKey"];
+                        string environment = ConfigurationManager.AppSettings["Braintree.Environment"];
+                        Braintree.BraintreeGateway braintree = new Braintree.BraintreeGateway(environment, merchantId,
+                            publicKey, privateKey);
+                        Braintree.CustomerRequest customer = new Braintree.CustomerRequest();
+                        customer.CustomerId = u.Id;
+                        customer.Email = u.Email;
+
+                        var r = await braintree.Customer.CreateAsync(customer);
+
+
+                        string confirmationToken = manager.GenerateEmailConfirmationToken(u.Id);
+
+                        string sendGridApiKey = System.Configuration.ConfigurationManager.AppSettings["SendGrid.ApiKey"];
+
+                        //SendGrid.SendGridClient 
+                        var client = new SendGrid.SendGridClient(sendGridApiKey);
+                        //SendGrid.Helpers.Mail.SendGridMessage 
+                        var message = new SendGrid.Helpers.Mail.SendGridMessage();
+                        message.Subject = string.Format("Please confirm your account");
+                        message.From = new SendGrid.Helpers.Mail.EmailAddress("admin@boardgames.codingtemple.com",
+                            "Coding Temple Board Games Administrator");
+                        message.AddTo(new SendGrid.Helpers.Mail.EmailAddress(model.EmailAddress));
+                        SendGrid.Helpers.Mail.Content contents = new SendGrid.Helpers.Mail.Content("text/html",
+                            string.Format("<a href=\"{0}\">Confirm Account</a>",
+                                Request.Url.GetLeftPart(UriPartial.Authority) + "/Account/Confirm/" + confirmationToken +
+                                "?email=" + model.EmailAddress));
+
+                        message.AddContent(contents.Type, contents.Value);
+                        SendGrid.Response response = await client.SendEmailAsync(message);
+
+
+
+                        return RedirectToAction("ConfirmSent");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("EmailAddress", "Unable to register with this email address");
                     }
                 }
-                return RedirectToAction("Index", "Home");
+                
             }
             return View(model);  
         }
 
+        public ActionResult ConfirmSent()
+        {
+            return View();
+        }
+
+        public ActionResult Confirm(string id, string email)
+        {
+            using (IdentityModels entities = new IdentityModels())
+            {
+                var userStore = new UserStore<User>(entities);
+
+                var manager = new UserManager<User>(userStore);
+                manager.UserTokenProvider = new EmailTokenProvider<User>();
+                var user = manager.FindByName(email);
+                if (user != null)
+                {
+                    var result = manager.ConfirmEmail(user.Id, id);
+                    if (result.Succeeded)
+                    {
+                        TempData.Add("AccountConfirmed", true);
+                        return RedirectToAction("Login");
+                    }
+                }
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
         public ActionResult Login()
         {
             return View(new LoginModel());
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Login(LoginModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                using (IdentityModels entities = new IdentityModels())
+                {
+                    var userStore = new UserStore<User>(entities);
 
+                    var manager = new UserManager<User>(userStore);
+
+                    var user = manager.FindByEmail(model.EmailAddress);
+
+                    if (manager.CheckPassword(user, model.Password))
+                    {
+                        FormsAuthentication.SetAuthCookie(model.EmailAddress, true);
+                        return RedirectToAction("Index", "Home");
+                    }
+                    ModelState.AddModelError("EmailAddress", "Could not sign in with this username and/or password");
+                }
+            }
+            return View(model);
+        }
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();

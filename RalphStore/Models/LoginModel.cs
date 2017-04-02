@@ -10,10 +10,12 @@ namespace RalphStore.Models
     {
         [Required]
         [EmailAddress]
+        [Display(Name = "Email Address:")]
         public string EmailAddress { get; set; }
 
         [Required]
         [MinLength(7)]
+        [Display(Name = "Password:")]
         public string Password { get; set; }
     }
 }

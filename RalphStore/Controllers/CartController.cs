@@ -21,17 +21,22 @@ namespace RalphStore.Controllers
 
             model.Items = new CartItemModel[cart.Count];
             model.SubTotal = 0;
-            for (int i = 0; i < cart.Count; i++)
+            for (int i = 0; i < cart.Count; i++)    
             {
                 model.Items[i] = new CartItemModel
                 {
                     Product = cart[i],
                     Quantity = 1
                 };
-                model.SubTotal += (model.Items[i].Product.ProductPrice ?? 0) * (model.Items[i].Quantity ?? 0);
+                model.SubTotal += (model.Items[i].Product.Price ?? 0) * (model.Items[i].Quantity ?? 0);
             }
             ViewBag.PageGenerationTime = DateTime.UtcNow;
             return View(model);
         }
+
+        //public ActionResult ContinueShopping()
+        //{
+        //    return RedirectToAction();
+        //}
     }
 }

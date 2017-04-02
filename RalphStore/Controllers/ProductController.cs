@@ -9,9 +9,9 @@ namespace RalphStore.Controllers
 {
     public class ProductController : Controller
     {
-        ProductModel model = new ProductModel();
+        //ProductModel model = new ProductModel();
         // GET: Product
-        
+        [OutputCache(Duration = 300)]
         public ActionResult Index(int? id)
         {
             //if (id == 1)
@@ -43,9 +43,9 @@ namespace RalphStore.Controllers
                 {
                     ProductModel model = new ProductModel();
                     model.ID = product.ID;
-                    model.ProductDescription = product.Description;
-                    model.ProductName = product.Name;
-                    model.ProductPrice = product.Price;
+                    model.Description = product.Description;
+                    model.Name = product.Name;
+                    model.Price = product.Price;
                     model.Images = product.ProductImages.Select(x => x.Path).ToArray();
 
                     return View(model);
@@ -63,10 +63,54 @@ namespace RalphStore.Controllers
                 if (User.Identity.IsAuthenticated)
                 {
                     AspNetUser currentUser = entities.AspNetUsers.Single(x => x.UserName == User.Identity.Name);
-                    //OrderHeader o = currentUser.Orders.FirstOrDefault(x => x.Completed == null);
+                    Order o = currentUser.Orders.FirstOrDefault(x => x.Completed == null);
+                    if (o == null)
+                    {
+                        o = new Order();
+                        o.OrderNumber = Guid.NewGuid();
+                        currentUser.Orders.Add(o);
+                    }
+                    var product = o.OrderProducts.FirstOrDefault(x => x.ProductID == model.ID);
+                    if (product == null)
+                    {
+                        product = new OrderProduct();
+                        product.ProductID = model.ID ?? 0;
+                        product.Quantity = 0;
+                        o.OrderProducts.Add(product);
+                    }
+                    product.Quantity += 1;
                 }
+                else
+                {
+                    Order o = null;
+                    if (Request.Cookies.AllKeys.Contains("orderNumber"))
+                    {
+                        Guid orderNumber = Guid.Parse(Request.Cookies["orderNumber"].Value);
+                        o = entities.Orders.FirstOrDefault(x => x.Completed == null && x.OrderNumber == orderNumber);
+
+                    }
+                    if (o == null)
+                    {
+                        o = new Order();
+                        o.OrderNumber = Guid.NewGuid();
+                        entities.Orders.Add(o);
+                        Response.Cookies.Add(new HttpCookie("orderNumber", o.OrderNumber.ToString()));
+                    }
+                    var product = o.OrderProducts.FirstOrDefault(x => x.ProductID == model.ID);
+                    if (product == null)
+                    {
+                        product = new OrderProduct();
+                        product.ProductID = model.ID ?? 0;
+                        product.Quantity = 0;
+                        o.OrderProducts.Add(product);
+                    }
+                    product.Quantity += 1;
+                }
+
+                entities.SaveChanges();
+                TempData.Add("AddedToCart", true);
             }
-            return HttpNotFound();
+            return RedirectToAction("Index", "Cart");
         }
     }
 }

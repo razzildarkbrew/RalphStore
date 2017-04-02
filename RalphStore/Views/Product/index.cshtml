@@ -1,6 +1,6 @@
 ﻿@model RalphStore.Models.ProductModel
 @{
-    ViewBag.Title = "Model.ProductName";
+    ViewBag.Title = "Model.Name";
 }
 
         <div class="row">
@@ -12,15 +12,15 @@
             </div>
             <div class="col-xs-8">
                 <div class="well">
-                   <h2>@Model.ProductName</h2>
-                    <p>@Model.ProductPrice.Value.ToString("C")</p>
-                    <p>@Model.ProductDescription</p>
+                   <h2>@Model.Name</h2>
+                    <p>@Model.Price.Value.ToString("C")</p>
+                    <p>@Model.Description</p>
                     @using (Html.BeginForm())
             {
                         @Html.HiddenFor(x => x.ID)
-                        @Html.HiddenFor(x => x.ProductName)
-                        @Html.HiddenFor(x => x.ProductPrice)
-                        @Html.HiddenFor(x => x.ProductDescription)
+                        @Html.HiddenFor(x => x.Name)
+                        @Html.HiddenFor(x => x.Price)
+                        @Html.HiddenFor(x => x.Description)
                         <input type="submit" class="btn btn-default" value="Add To Cart" />
                     }
 
