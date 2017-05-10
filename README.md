@@ -10,3 +10,11 @@
   <li>Credit card payments using Braintree API</li>
   <li>Created a database for customer, products and orders using SQL</li>
 </ul>
+
+<img src="unbox1.png" width="300" height="200">
+<img src="unbox2.png" width="300" height="200">
+<img src="unbox3.png" width="300" height="200">
+<img src="unbox4.png" width="300" height="200">
+<img src="unbox5.png" width="300" height="200">
+<img src="unbox6.png" width="300" height="200">
+<img src="unbox7.png" width="300" height="200">
